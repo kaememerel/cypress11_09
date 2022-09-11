@@ -3,10 +3,10 @@ Cypress.config().waitForAnimations = true;
 Cypress.on("uncaught:exception", (err, runnable) => {
     return false;
 })
-
-const testedURL = "https://www.wsb.pl/warszawa/";
-const phrase = "tester oprogramowania{enter}"
-const courseLink = "Tester oprogramowania - Program"
+import { testedURL, phrase, courseLink, typeOfTraining } from "../../fixtures/parameters.json";
+//const testedURL = "https://www.wsb.pl/warszawa/";
+//const phrase = "tester oprogramowania{enter}"
+//const courseLink = "Tester oprogramowania - Program"
 
 describe('WSB search', ()=>{
     it('should open url address', ()=>{
@@ -22,8 +22,16 @@ describe('WSB search', ()=>{
     })
     it("should contain programme for testers", () => {
         cy.get('[value="96"] > .box').click()
+        //Asercje 3 rozwiazania
         //rozw 1
         //cy.get(".listing-content").contains(courseLink, {matchCase: true});
-        cy.get(".listing-content").should("contain", courseLink)
+        // rozw 2
+        //cy.get(".listing-content").should("contain", courseLink)
+        cy.get(".listing-content").then(($result) => {
+            expect($result.text()).to.include(courseLink);
+        })
+        cy.get(".listing-content").then(($results) => {
+            expect($results.text()).to.include("Kierunek");
+        });
     })
 });
